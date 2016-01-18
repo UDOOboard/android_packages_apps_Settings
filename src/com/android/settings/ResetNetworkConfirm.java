@@ -97,7 +97,9 @@ public class ResetNetworkConfirm extends InstrumentedFragment {
             BluetoothManager btManager = (BluetoothManager)
                     context.getSystemService(Context.BLUETOOTH_SERVICE);
             if (btManager != null) {
-                btManager.getAdapter().factoryReset();
+                if(btManager.getAdapter() != null){
+			btManager.getAdapter().factoryReset();
+		}
             }
 
             Toast.makeText(context, R.string.reset_network_complete_toast, Toast.LENGTH_SHORT)
