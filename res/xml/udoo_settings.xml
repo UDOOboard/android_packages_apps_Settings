@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
+    android:key="udoo_settings_general"
+    android:title="@string/udoo_settings_title">
+
+    <!--<PreferenceScreen-->
+        <!--android:fragment="org.udoo.udoosettings.task.ChangeParameterFragment"-->
+        <!--android:key="udoo_settings_general1"-->
+        <!--android:title="@string/udoo_settings_display" />-->
+
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/displayTypeArray"
+        android:entryValues="@array/displayTypeArray"
+        android:key="@string/display_type_key"
+        android:title="Display select" />
+</PreferenceScreen>

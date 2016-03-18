@@ -43,6 +43,7 @@
     <string name="show_dev_already">No need, you are already a developer.</string>
 
     <!-- Category headings in left-pane header menu --> <skip />
+
     <!-- Settings main menu category heading. Wireless and networks (Wi-Fi, Bluetooth, data usage...). [CHAR LIMIT=40] -->
     <string name="header_category_wireless_networks">Wireless &amp; networks</string>
     <!-- Settings main menu category heading. Wireless and networks (Wi-Fi, Bluetooth, data usage...). [CHAR LIMIT=40] -->
@@ -6089,5 +6090,12 @@
    <string name="imei_information_title">IMEI information</string>
    <string name="imei_information_summary">IMEI relative information</string>
    <string name="slot_number">(Slot<xliff:g id="slot_num">%1$d</xliff:g>)</string>
+
+   <!-- Settings main menu category heading. Udoo Settings. [CHAR LIMIT=40] -->
+    <string name="header_category_udoo">UDOO</string>
+    <string name="udoo_settings_title">General</string>
+    <string name="udoo_settings">test</string>
+    <string name="udoo_settings_display">subTitle</string>
+    <string name="display_type_key">display_type_preference</string>
 
 </resources>
