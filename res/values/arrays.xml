@@ -1389,4 +1389,8 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="displayTypeArray">
+        <item>lvds7</item>
+        <item>hdmi</item>
+    </string-array>
 </resources>

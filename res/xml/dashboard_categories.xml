@@ -17,6 +17,20 @@
 <dashboard-categories
         xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- UDOO -->
+    <dashboard-category
+        android:id="@+id/udoo_section"
+        android:title="@string/header_category_udoo">
+
+        <!-- General -->
+        <dashboard-tile
+            android:id="@+id/udoo_settings"
+            android:fragment="org.udoo.udoosettings.UdooSettings"
+            android:icon="@drawable/ic_udoo"
+            android:title="@string/udoo_settings_title" />
+    </dashboard-category>
+
+
     <!-- WIRELESS and NETWORKS -->
     <dashboard-category
             android:id="@+id/wireless_section"

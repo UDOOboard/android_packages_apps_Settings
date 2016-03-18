@@ -7074,4 +7074,11 @@
 
     <!-- Description of feature to change color setting for the display [CHAR LIMIT=NONE] -->
     <string name="picture_color_mode_desc">Use sRGB</string>
+
+    <!-- Settings main menu category heading. Udoo Settings. [CHAR LIMIT=40] -->
+    <string name="header_category_udoo">UDOO</string>
+    <string name="udoo_settings_title">General</string>
+    <string name="udoo_settings">test</string>
+    <string name="udoo_settings_display">subTitle</string>
+    <string name="display_type_key">display_type_preference</string>
 </resources>
