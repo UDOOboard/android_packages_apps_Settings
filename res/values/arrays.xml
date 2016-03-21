@@ -1261,8 +1261,13 @@
         <item>Red</item>
     </string-array>
 
-    <string-array name="displayTypeArray">
+     <string-array name="displayTypeArray">
         <item>lvds7</item>
         <item>hdmi</item>
+    </string-array>
+
+    <string-array name="displayValues">
+        <item>LVDS 7</item>
+        <item>HDMI</item>
     </string-array>
 </resources>

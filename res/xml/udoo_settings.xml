@@ -12,8 +12,8 @@
 
     <ListPreference
         android:defaultValue="1"
-        android:entries="@array/displayTypeArray"
+        android:entries="@array/displayValues"
         android:entryValues="@array/displayTypeArray"
         android:key="@string/display_type_key"
-        android:title="Display select" />
+        android:title="@string/udoo_settings_title" />
 </PreferenceScreen>

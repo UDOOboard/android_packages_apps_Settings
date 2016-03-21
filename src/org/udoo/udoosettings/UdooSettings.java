@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import org.udoo.udoosettings.interfaces.OnResult;
 import org.udoo.udoosettings.task.UtilUdoo;
@@ -22,7 +23,8 @@ import com.android.settings.R;
 public class UdooSettings extends PreferenceFragment {
     private String mDisplayTypeKey;
 
-@Override
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -63,6 +65,15 @@ public class UdooSettings extends PreferenceFragment {
                             public void run() {
                                 preference.setSummary(value);
                                 preference.getEditor().putString(mDisplayTypeKey, value).apply();
+
+                                Toast.makeText(getActivity(), getString(R.string.apply_mod_ok), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } else {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getActivity(), getString(R.string.apply_mod_ko), Toast.LENGTH_LONG).show();
                             }
                         });
                     }
@@ -70,7 +81,12 @@ public class UdooSettings extends PreferenceFragment {
 
                 @Override
                 public void onError(Throwable throwable) {
-
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), getString(R.string.apply_mod_ko), Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             });
             return true;
