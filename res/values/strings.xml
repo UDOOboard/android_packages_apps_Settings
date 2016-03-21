@@ -6093,9 +6093,9 @@
 
    <!-- Settings main menu category heading. Udoo Settings. [CHAR LIMIT=40] -->
     <string name="header_category_udoo">UDOO</string>
-    <string name="udoo_settings_title">Select video output</string>
-    <string name="udoo_settings">test</string>
-    <string name="udoo_settings_display">subTitle</string>
+    <string name="udoo_settings_title">General</string>
+    <string name="udoo_settings">Udoo Settings</string>
+    <string name="udoo_display_settings_title">Select video output</string>
     <string name="display_type_key">display_type_preference</string>
     <string name="apply_mod_ok">Video output changed, and will be applied on the next boot</string>
     <string name="apply_mod_ko">Failed: video output not changed</string>

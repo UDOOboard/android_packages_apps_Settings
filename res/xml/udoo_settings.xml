@@ -15,5 +15,5 @@
         android:entries="@array/displayValues"
         android:entryValues="@array/displayTypeArray"
         android:key="@string/display_type_key"
-        android:title="@string/udoo_settings_title" />
+        android:title="@string/udoo_display_settings_title" />
 </PreferenceScreen>

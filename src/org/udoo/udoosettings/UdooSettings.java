@@ -63,10 +63,9 @@ public class UdooSettings extends PreferenceFragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                Toast.makeText(getActivity(), getString(R.string.apply_mod_ok), Toast.LENGTH_LONG).show();
                                 preference.setSummary(value);
                                 preference.getEditor().putString(mDisplayTypeKey, value).apply();
-
-                                Toast.makeText(getActivity(), getString(R.string.apply_mod_ok), Toast.LENGTH_LONG).show();
                             }
                         });
                     } else {
