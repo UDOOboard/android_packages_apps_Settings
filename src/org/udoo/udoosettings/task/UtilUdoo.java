@@ -5,16 +5,13 @@ import android.util.Log;
 import org.udoo.udoosettings.interfaces.OnResult;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by harlem88 on 16/03/16.
@@ -32,27 +29,29 @@ public class UtilUdoo {
             @Override
             public void run() {
                 boolean success = false;
+                String lineParam = "";
                 try {
                     if (param != null && param.length() > 0) {
-                        RandomAccessFile randomAccessFile = new RandomAccessFile(UENV_PATH, "rw");
-                        String line;
-                        long pos = 0;
-                        while (!success && (line = randomAccessFile.readLine()) != null) {
-                            if (line.startsWith(VIDEO_OUT)) {
-                                long endLine = randomAccessFile.getFilePointer();
-                                byte[] remainingBytes = new byte[(int) (randomAccessFile.length() - endLine)];
-                                randomAccessFile.read(remainingBytes);
-                                randomAccessFile.getChannel().truncate(pos);
-                                randomAccessFile.seek(pos);
-                                randomAccessFile.writeBytes(VIDEO_OUT + param + "\n");
-                                randomAccessFile.write(remainingBytes);
-                                randomAccessFile.close();
-                                success = true;
-                            } else
-                                pos += randomAccessFile.getFilePointer();
-                        }
 
+                        File file = new File(UENV_PATH);
+                        BufferedReader reader = new BufferedReader(new FileReader(file));
+                        String line, oldtext = "";
+                        while ((line = reader.readLine()) != null) {
+
+                            if (line.startsWith(VIDEO_OUT))
+                                lineParam = line;
+
+                            oldtext += line + "\r\n";
+                        }
+                        reader.close();
+                        String newtext = oldtext.replace(lineParam, VIDEO_OUT + param);
+
+                        FileWriter writer = new FileWriter(UENV_PATH);
+                        writer.write(newtext);
+                        writer.close();
+                        success = true;
                     }
+
                 } catch (IOException e) {
                     Log.e(TAG, "" + e.getMessage());
                     if (onResult != null)
