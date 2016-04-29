@@ -1388,16 +1388,4 @@
         <!-- Do not translate. -->
         <item>0</item>
     </string-array>
-
-     <string-array name="displayTypeArray">
-        <item>lvds7</item>
-        <item>lvds15</item>
-        <item>hdmi</item>
-    </string-array>
-
-    <string-array name="displayValues">
-        <item>LVDS 7</item>
-        <item>LVDS 15</item>
-        <item>HDMI</item>
-    </string-array>
 </resources>
