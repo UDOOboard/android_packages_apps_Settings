@@ -74,7 +74,7 @@ public class UtilUdoo {
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
                     String line = bufferedReader.readLine();
                     boolean find = false;
-                    while (line != null && line.length() > 0 && !find) {
+                    while (line != null && !find) {
                         if (line.startsWith(VIDEO_OUT)) {
                             value = line.substring(VIDEO_OUT.length(), line.length());
                             find = true;
