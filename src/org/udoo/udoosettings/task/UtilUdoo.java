@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.util.concurrent.Executors;
 
 /**
@@ -89,6 +90,101 @@ public class UtilUdoo {
                 }
                 if (onResult != null)
                     onResult.onSuccess(value);
+            }
+        });
+    }
+
+    public static boolean ExecuteCommandLine(String commandLine) {
+        boolean retval = false;
+
+        try {
+            Process process = Runtime.getRuntime().exec(commandLine);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuffer output = new StringBuffer();
+            char[] buffer = new char[4096];
+            int read;
+
+            while ((read = reader.read(buffer)) > 0) {
+                output.append(buffer, 0, read);
+            }
+
+            reader.close();
+
+            process.waitFor();
+
+            Log.d("executeCommandLine", output.toString());
+
+            retval = (process.exitValue() == 0);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to execute '" + commandLine + "'", e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Unable to execute '" + commandLine + "'", e);
+        }
+
+        return retval;
+    }
+
+
+    public static void Get(final String key, final OnResult<String> onGetPropertyResult) {
+        Executors.newSingleThreadExecutor().submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Class clazz = Class.forName("android.os.SystemProperties");
+                    if (clazz != null) {
+                        Method method = clazz.getDeclaredMethod("get", String.class);
+                        if (method != null) {
+                            String prop = (String) method.invoke(null, key);
+                            if (onGetPropertyResult != null)
+                                onGetPropertyResult.onSuccess(prop);
+                        } else {
+                            Log.e(TAG, "Cannot reflect method get on class android.os.SystemProperties");
+                            if (onGetPropertyResult != null)
+                                onGetPropertyResult.onError(new Throwable("Cannot reflect method get on class android.os.SystemProperties"));
+                        }
+                    } else {
+                        Log.e(TAG, "Cannot reflect android.os.SystemProperties");
+                        if (onGetPropertyResult != null)
+                            onGetPropertyResult.onError(new Throwable("Cannot reflect method get on class android.os.SystemProperties"));
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception during reflection: " + e.getMessage());
+                    if (onGetPropertyResult != null)
+                        onGetPropertyResult.onError(e);
+                }
+            }
+        });
+    }
+
+    public static void Set(final String key, final String value, final OnResult<Boolean> onSetPropertyResult) {
+        Executors.newSingleThreadExecutor().submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    boolean success = false;
+                    Class clazz = Class.forName("android.os.SystemProperties");
+                    if (clazz != null) {
+                        Method method = clazz.getDeclaredMethod("set", String.class, String.class);
+                        if (method != null) {
+                            method.invoke(null, key, value);
+                            success = true;
+                        } else {
+                            Log.e(TAG, "Cannot reflect method get on class android.os.SystemProperties");
+                        }
+                    } else {
+                        Log.e(TAG, "Cannot reflect android.os.SystemProperties");
+                    }
+                    if (onSetPropertyResult != null)
+                        onSetPropertyResult.onSuccess(success);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception during reflection: " + e.getMessage());
+
+                    if (onSetPropertyResult != null)
+                        onSetPropertyResult.onError(e);
+                }
             }
         });
     }

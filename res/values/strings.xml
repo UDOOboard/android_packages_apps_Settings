@@ -7078,9 +7078,14 @@
     <!-- Settings main menu category heading. Udoo Settings. [CHAR LIMIT=40] -->
     <string name="header_category_udoo">UDOO</string>
     <string name="udoo_settings_title">General</string>
-    <string name="udoo_settings">Udoo Settings</string>
+    <string name="udoo_settings">UDOO Settings</string>
     <string name="udoo_display_settings_title">Select video output</string>
     <string name="display_type_key">display_type_preference</string>
     <string name="apply_mod_ok">Video output changed, and will be applied on the next boot</string>
     <string name="apply_mod_ko">Failed: video output not changed</string>
+    
+<!-- Setting checkbox title for Whether to enable external OTG port on the phone. -->
+    <string name="enable_external_otg">Enable internal Arduino communication</string>
+    <!-- Setting checkbox summary for Whether to enable USB debugging support on the phone -->
+    <string name="enable_external_otg_summary">Warning: enabling internal Arduino communication will disconnect the external USB OTG port</string>
 </resources>

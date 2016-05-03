@@ -16,4 +16,10 @@
         android:entryValues="@array/displayTypeArray"
         android:key="@string/display_type_key"
         android:title="@string/udoo_display_settings_title" />
+
+    <CheckBoxPreference
+        android:key="enable_external_otg"
+        android:title="@string/enable_external_otg"
+        android:summary="@string/enable_external_otg_summary"/>
+
 </PreferenceScreen>
