@@ -7081,11 +7081,17 @@
     <string name="udoo_settings">UDOO Settings</string>
     <string name="udoo_display_settings_title">Select video output</string>
     <string name="display_type_key">display_type_preference</string>
-    <string name="apply_mod_ok">Video output changed, and will be applied on the next boot</string>
-    <string name="apply_mod_ko">Failed: video output not changed</string>
+    <string name="apply_video_mod_ok">video output changed, and will be applied on the next boot</string>
+    <string name="apply_video_mod_ko">failed: video output not changed</string>
     
 <!-- Setting checkbox title for Whether to enable external OTG port on the phone. -->
     <string name="enable_external_otg">Enable internal Arduino communication</string>
     <!-- Setting checkbox summary for Whether to enable USB debugging support on the phone -->
     <string name="enable_external_otg_summary">Warning: enabling internal Arduino communication will disconnect the external USB OTG port</string>
+	
+    <string name="governor_type_key">governor_type_key</string>
+    <string name="udoo_governor_settings_title">Select governor</string>
+
+    <string name="apply_governor_mod_ok">governor changed</string>
+    <string name="apply_governor_mod_ko">failed: governor not changed</string>
 </resources>

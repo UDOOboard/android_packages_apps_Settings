@@ -2,13 +2,12 @@ package org.udoo.udoosettings;
 
 import android.os.Build;
 import android.os.Bundle;
-
 import android.os.Handler;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.udoo.udoosettings.interfaces.OnResult;
@@ -27,6 +26,9 @@ public class UdooSettings extends PreferenceFragment {
     private static final String ADK_PROP = "persist.udoo_enable_adk";
     private Handler mUIHandler;
     private final static String UDOO_QUAD = "UDOO-MX6DQ";
+    private static final String GOVERNORS_LIST = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors";
+    private static final String GOVERNOR = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
+    private static final String NO_GOVERNOR_AVAILABLE = "no governor founds";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class UdooSettings extends PreferenceFragment {
         addPreferencesFromResource(R.xml.udoo_settings);
         mUIHandler = new Handler();
         mDisplayTypeKey = getString(R.string.display_type_key);
+
 
         if (Build.MODEL.equals(UDOO_QUAD))
             mEnableExtOTG = findAndInitCheckboxPref(ENABLE_EXTERNAL_OTG);
@@ -94,20 +97,55 @@ public class UdooSettings extends PreferenceFragment {
         UtilUdoo.ReadParameter(new OnResult<String>() {
             @Override
             public void onSuccess(final String o) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        addPreferencesFromResource(R.xml.udoo_settings);
-                        Preference preference = getPreferenceManager().findPreference(getString(R.string.display_type_key));
-                        preference.setSummary(o);
-                        preference.getEditor().putString(mDisplayTypeKey, o).apply();
-                        preference.setOnPreferenceChangeListener(preferenceChangeListener);
-                    }
-                });
+                Preference preference = getPreferenceManager().findPreference(getString(R.string.display_type_key));
+                preference.setSummary(o);
+                preference.getEditor().putString(mDisplayTypeKey, o).apply();
+                preference.setOnPreferenceChangeListener(preferenceChangeListener);
             }
 
             @Override
             public void onError(Throwable throwable) {
+                Preference preference = getPreferenceManager().findPreference(getString(R.string.display_type_key));
+                preference.setSummary("-");
+            }
+        });
+
+        UtilUdoo.ReadOneLine(GOVERNOR, new OnResult<String>() {
+            @Override
+            public void onSuccess(String o) {
+                ListPreference preference = (ListPreference) getPreferenceManager().findPreference(getString(R.string.governor_type_key));
+                preference.setValue(o);
+                preference.setSummary(o);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                Preference preference = getPreferenceManager().findPreference(getString(R.string.governor_type_key));
+                preference.setSummary("-");
+            }
+        });
+
+        UtilUdoo.ReadOneLine(GOVERNORS_LIST, new OnResult<String>() {
+            @Override
+            public void onSuccess(String governors) {
+                ListPreference listPreference = (ListPreference) getPreferenceManager().findPreference(getString(R.string.governor_type_key));
+                if (governors.length() > 0) {
+                    String[] av_govs = governors.split(" ");
+                    listPreference.setEntries(av_govs);
+                    listPreference.setEntryValues(av_govs);
+
+                    listPreference.setOnPreferenceChangeListener(preferenceChangeListener);
+                } else {
+                    CharSequence seq[] = new CharSequence[1];
+                    seq[0] = NO_GOVERNOR_AVAILABLE;
+                    listPreference.setEntries(seq);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                Preference preference = getPreferenceManager().findPreference(getString(R.string.governor_type_key));
+                preference.setSummary("-");
             }
         });
     }
@@ -116,38 +154,60 @@ public class UdooSettings extends PreferenceFragment {
         @Override
         public boolean onPreferenceChange(final Preference preference, final Object newValue) {
             final String value = (String) newValue;
-            UtilUdoo.WriteParameter(value, new OnResult<Boolean>() {
-                @Override
-                public void onSuccess(Boolean isWritePreference) {
-                    if (isWritePreference) {
+            final String pref_key = preference.getKey();
+
+            if (pref_key.equals(getString(R.string.display_type_key))) {
+                UtilUdoo.WriteParameter(value, new OnResult<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean isWritePreference) {
+                        if (isWritePreference) {
+                            mUIHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getActivity(), getString(R.string.apply_video_mod_ok), Toast.LENGTH_LONG).show();
+                                    preference.setSummary(value);
+                                    preference.getEditor().putString(mDisplayTypeKey, value).apply();
+                                }
+                            });
+                        } else {
+                            mUIHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getActivity(), getString(R.string.apply_governor_mod_ko), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getActivity(), getString(R.string.apply_mod_ok), Toast.LENGTH_LONG).show();
-                                preference.setSummary(value);
-                                preference.getEditor().putString(mDisplayTypeKey, value).apply();
-                            }
-                        });
-                    } else {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getActivity(), getString(R.string.apply_mod_ko), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), getString(R.string.apply_video_mod_ko), Toast.LENGTH_LONG).show();
                             }
                         });
                     }
-                }
+                });
+            } else if (pref_key.equals(getString(R.string.governor_type_key))) {
 
-                @Override
-                public void onError(Throwable throwable) {
-                    getActivity().runOnUiThread(new Runnable() {
+                if (UtilUdoo.ExecuteCommandLine("su -c echo " + value + " > " + GOVERNOR)) {
+                    preference.setSummary(value);
+                    mUIHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity(), getString(R.string.apply_mod_ko), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), getString(R.string.apply_governor_mod_ok), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    mUIHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), getString(R.string.apply_governor_mod_ko), Toast.LENGTH_LONG).show();
                         }
                     });
                 }
-            });
+            }
             return true;
         }
     };

@@ -188,4 +188,53 @@ public class UtilUdoo {
             }
         });
     }
+
+    public static void ReadOneLine(final String fname, final OnResult<String> onReadLineResult) {
+        Executors.newSingleThreadExecutor().submit(new Runnable() {
+            @Override
+            public void run() {
+                BufferedReader br;
+                String line = "";
+                try {
+                    br = new BufferedReader(new FileReader(fname), 512);
+                    try {
+                        line = br.readLine();
+                    } finally {
+                        br.close();
+                    }
+                    if (onReadLineResult != null)
+                        onReadLineResult.onSuccess(line);
+                } catch (Exception e) {
+                    Log.e(TAG, "IO Exception when reading " + fname + " file", e);
+
+                    if (onReadLineResult != null)
+                        onReadLineResult.onError(e);
+                }
+            }
+        });
+
+    }
+
+    public static void WriteOneLine(final String fname, final String value, final OnResult<Boolean> onReadLineResult) {
+        Executors.newSingleThreadExecutor().submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FileWriter fw = new FileWriter(fname);
+                    try {
+                        fw.write(value);
+                    } finally {
+                        fw.close();
+                    }
+                    if (onReadLineResult != null)
+                        onReadLineResult.onSuccess(true);
+                } catch (IOException e) {
+                    String Error = "Error writing to " + fname + ". Exception: ";
+                    Log.e(TAG, Error, e);
+                    if (onReadLineResult != null)
+                        onReadLineResult.onError(e);
+                }
+            }
+        });
+    }
 }

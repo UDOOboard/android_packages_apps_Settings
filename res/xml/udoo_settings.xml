@@ -5,11 +5,6 @@
     android:key="udoo_settings_general"
     android:title="@string/udoo_settings_title">
 
-    <!--<PreferenceScreen-->
-        <!--android:fragment="org.udoo.udoosettings.task.ChangeParameterFragment"-->
-        <!--android:key="udoo_settings_general1"-->
-        <!--android:title="@string/udoo_settings_display" />-->
-
     <ListPreference
         android:defaultValue="1"
         android:entries="@array/displayValues"
@@ -19,7 +14,12 @@
 
     <CheckBoxPreference
         android:key="enable_external_otg"
-        android:title="@string/enable_external_otg"
-        android:summary="@string/enable_external_otg_summary"/>
+        android:summary="@string/enable_external_otg_summary"
+        android:title="@string/enable_external_otg" />
+
+
+    <ListPreference
+        android:key="@string/governor_type_key"
+        android:title="@string/udoo_governor_settings_title" />
 
 </PreferenceScreen>
