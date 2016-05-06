@@ -29,6 +29,11 @@ public class UdooSettings extends PreferenceFragment {
     private static final String GOVERNORS_LIST = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors";
     private static final String GOVERNOR = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
     private static final String NO_GOVERNOR_AVAILABLE = "no governor founds";
+    private static final String SETTINGS_AUDIO_DEVICE = "persist.audio.device";
+    private ListPreference mAudioDevicePref;
+    private static final String KEY_AUDIO_DEVICE = "audio_device";
+    private String mAudioDevice;
+    private static final String AUDIO_DEVICE_DEFAULT = "imx-hdmi-soc";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,10 @@ public class UdooSettings extends PreferenceFragment {
         mDisplayTypeKey = getString(R.string.display_type_key);
 
 
-        if (Build.MODEL.equals(UDOO_QUAD))
+        if (Build.MODEL.equals(UDOO_QUAD)) {
             mEnableExtOTG = findAndInitCheckboxPref(ENABLE_EXTERNAL_OTG);
+            mAudioDevicePref = (ListPreference) findPreference(KEY_AUDIO_DEVICE);
+        }
 
         init();
     }
@@ -74,6 +81,8 @@ public class UdooSettings extends PreferenceFragment {
 
     private void init() {
         if (Build.MODEL.equals(UDOO_QUAD)) {
+            mAudioDevicePref.setOnPreferenceChangeListener(preferenceChangeListener);
+
             UtilUdoo.Get(ADK_PROP, new OnResult<String>() {
                 @Override
                 public void onSuccess(final String state) {
@@ -92,6 +101,24 @@ public class UdooSettings extends PreferenceFragment {
                 public void onError(Throwable throwable) {
                 }
             });
+
+            UtilUdoo.Get(SETTINGS_AUDIO_DEVICE, new OnResult<String>() {
+                @Override
+                public void onSuccess(String value) {
+                    mAudioDevice = value.length() > 0 ? value : AUDIO_DEVICE_DEFAULT;
+
+                    mAudioDevicePref.setValue(mAudioDevice);
+                    mAudioDevicePref.setSummary(mAudioDevice);
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    mAudioDevice = AUDIO_DEVICE_DEFAULT;
+                    mAudioDevicePref.setValue(mAudioDevice);
+                    mAudioDevicePref.setSummary(mAudioDevice);
+                }
+            });
+
         }
 
         UtilUdoo.ReadParameter(new OnResult<String>() {
@@ -207,7 +234,46 @@ public class UdooSettings extends PreferenceFragment {
                         }
                     });
                 }
+            } else if (KEY_AUDIO_DEVICE.equals(pref_key)) {
+                if (!mAudioDevice.equals(value)) {
+                    UtilUdoo.Set(SETTINGS_AUDIO_DEVICE, value, new OnResult<Boolean>() {
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            if (result) {
+                                mAudioDevice = value;
+                                preference.setSummary(mAudioDevice);
+                                mUIHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getActivity(), R.string.audio_device_reboot_message, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            } else {
+                                mUIHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getActivity(), R.string.audio_device_set_error, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable throwable) {
+                            mUIHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getActivity(), R.string.audio_device_set_error, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+
+                }
             }
+
             return true;
         }
     };

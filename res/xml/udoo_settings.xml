@@ -22,4 +22,11 @@
         android:key="@string/governor_type_key"
         android:title="@string/udoo_governor_settings_title" />
 
+    <ListPreference
+        android:key="audio_device"
+        android:title="@string/audio_device_title"
+        android:summary="@string/audio_device_title_summary"
+        android:persistent="false"
+        android:entries="@array/audio_device_entries"
+        android:entryValues="@array/audio_device_values" />
 </PreferenceScreen>
