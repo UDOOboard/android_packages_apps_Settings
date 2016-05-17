@@ -1297,7 +1297,7 @@ public class SettingsActivity extends Activity
                         removeTile = true;
                     }
                 } else if (id == R.id.development_settings) {
-                    if (!showDev || um.hasUserRestriction(
+                    if (um.hasUserRestriction(
                             UserManager.DISALLOW_DEBUGGING_FEATURES)) {
                         removeTile = true;
                     }
