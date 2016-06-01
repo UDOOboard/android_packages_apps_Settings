@@ -1,5 +1,7 @@
 package org.udoo.udoosettings;
 
+import android.util.Log;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +28,7 @@ public class UdooSettings extends PreferenceFragment {
     private static final String ADK_PROP = "persist.udoo_enable_adk";
     private Handler mUIHandler;
     private final static String UDOO_QUAD = "UDOO-MX6DQ";
+    private final static String A62 = "A62-MX6DQ";
     private static final String GOVERNORS_LIST = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors";
     private static final String GOVERNOR = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
     private static final String NO_GOVERNOR_AVAILABLE = "no governor founds";
@@ -42,9 +45,15 @@ public class UdooSettings extends PreferenceFragment {
         mUIHandler = new Handler();
         mDisplayTypeKey = getString(R.string.display_type_key);
 
-
         if (Build.MODEL.equals(UDOO_QUAD)) {
             mEnableExtOTG = findAndInitCheckboxPref(ENABLE_EXTERNAL_OTG);
+        }
+
+        if (Build.MODEL.equals(A62)) {
+	    removePreference(getPreferenceManager().findPreference(ENABLE_EXTERNAL_OTG));
+        }
+
+        if (Build.MODEL.equals(UDOO_QUAD) || Build.MODEL.equals(A62)) {
             mAudioDevicePref = (ListPreference) findPreference(KEY_AUDIO_DEVICE);
         }
 
@@ -81,8 +90,6 @@ public class UdooSettings extends PreferenceFragment {
 
     private void init() {
         if (Build.MODEL.equals(UDOO_QUAD)) {
-            mAudioDevicePref.setOnPreferenceChangeListener(preferenceChangeListener);
-
             UtilUdoo.Get(ADK_PROP, new OnResult<String>() {
                 @Override
                 public void onSuccess(final String state) {
@@ -101,7 +108,10 @@ public class UdooSettings extends PreferenceFragment {
                 public void onError(Throwable throwable) {
                 }
             });
+        }
 
+        if (Build.MODEL.equals(UDOO_QUAD) || Build.MODEL.equals(A62)) {
+            mAudioDevicePref.setOnPreferenceChangeListener(preferenceChangeListener);
             UtilUdoo.Get(SETTINGS_AUDIO_DEVICE, new OnResult<String>() {
                 @Override
                 public void onSuccess(String value) {
@@ -118,7 +128,6 @@ public class UdooSettings extends PreferenceFragment {
                     mAudioDevicePref.setSummary(mAudioDevice);
                 }
             });
-
         }
 
         UtilUdoo.ReadParameter(new OnResult<String>() {
