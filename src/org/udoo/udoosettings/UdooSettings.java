@@ -1,10 +1,12 @@
 package org.udoo.udoosettings;
 
-import android.util.Log;
-
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -200,7 +202,7 @@ public class UdooSettings extends PreferenceFragment {
                             mUIHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(getActivity(), getString(R.string.apply_video_mod_ok), Toast.LENGTH_LONG).show();
+                                    showRebootDialog(getString(R.string.udoo_settings_dialog_title), getString(R.string.apply_video_mod_ok));
                                     preference.setSummary(value);
                                     preference.getEditor().putString(mDisplayTypeKey, value).apply();
                                 }
@@ -304,5 +306,21 @@ public class UdooSettings extends PreferenceFragment {
         mAllPrefs.remove(preference);
     }
 
+    private void showRebootDialog(String title, String message){
+        new AlertDialog.Builder(getContext())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+                        pm.reboot("");
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {}
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 }
 
