@@ -7082,7 +7082,7 @@
     <string name="udoo_settings_dialog_title">Video Output</string>
     <string name="udoo_display_settings_title">Select video output</string>
     <string name="display_type_key">display_type_preference</string>
-    <string name="apply_video_mod_ok">video output changed, and will be applied on the next boot. Reboot now?</string>
+    <string name="apply_video_mod_ok">Video output saved. Reboot to apply settings now?</string>
     <string name="apply_video_mod_ko">failed: video output not changed</string>
     <string name="reboot_failed">failed: reboot</string>
     
