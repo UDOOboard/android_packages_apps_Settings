@@ -186,6 +186,16 @@ public class UdooSettings extends PreferenceFragment {
                 preference.setSummary("-");
             }
         });
+        
+        Preference button = (Preference)findPreference(getString(R.string.reboot_recovery));
+        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+                pm.reboot("recovery");
+                return true;
+            }
+        });
     }
 
     private Preference.OnPreferenceChangeListener preferenceChangeListener = new Preference.OnPreferenceChangeListener() {

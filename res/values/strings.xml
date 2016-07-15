@@ -7101,4 +7101,7 @@
     <string name="audio_device_title_summary">Select audio device to use for output</string>
     <string name="audio_device_reboot_message">Settings will be applied on the next boot</string>
     <string name="audio_device_set_error">failed: audio device not changed</string>
+    
+    <string name="reboot_recovery">reboot_recovery</string>
+    <string name="reboot_recovery_title">Reboot in TWRP Recovery</string>
 </resources>
