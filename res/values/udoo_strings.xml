@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Settings main menu category heading. Udoo Settings. [CHAR LIMIT=40] -->
+    <string name="header_category_udoo">UDOO</string>
+    <string name="udoo_settings_title">General</string>
+    <string name="udoo_settings">UDOO Settings</string>
+    <string name="udoo_settings_dialog_title">Video Output</string>
+    <string name="udoo_display_settings_title">Select video output</string>
+    <string name="display_type_key">display_type_preference</string>
+    <string name="apply_video_mod_ok">Video output saved. Reboot to apply settings now?</string>
+    <string name="apply_video_mod_ko">Failed: Video output not changed</string>
+    <string name="reboot_failed">Failed: Reboot</string>
+    
+    <!-- Setting checkbox title for Whether to enable external OTG port on the phone. -->
+    <string name="enable_external_otg">Enable internal Arduino communication</string>
+    <!-- Setting checkbox summary for Whether to enable USB debugging support on the phone -->
+    <string name="enable_external_otg_summary">Warning: Enabling internal Arduino communication will disconnect the external USB OTG port</string>
+	
+    <string name="governor_type_key">governor_type_key</string>
+    <string name="udoo_governor_settings_title">Select governor</string>
+
+    <string name="apply_governor_mod_ok">Governor changed</string>
+    <string name="apply_governor_mod_ko">Failed: Governor not changed</string>
+
+    <string name="audio_device_title">Audio device</string>
+    <string name="audio_device_title_summary">Select audio device to use for output</string>
+    <string name="audio_device_reboot_message">Settings will be applied on the next boot</string>
+    <string name="audio_device_set_error">Failed: Audio device not changed</string>
+    
+    <string name="reboot_recovery">reboot_recovery</string>
+    <string name="reboot_recovery_title">Reboot in TWRP Recovery</string>
+</resources>

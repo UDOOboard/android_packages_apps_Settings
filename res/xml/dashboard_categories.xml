@@ -30,7 +30,6 @@
             android:title="@string/udoo_settings_title" />
     </dashboard-category>
 
-
     <!-- WIRELESS and NETWORKS -->
     <dashboard-category
             android:id="@+id/wireless_section"
