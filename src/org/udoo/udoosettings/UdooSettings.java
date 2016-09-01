@@ -262,10 +262,10 @@ public class UdooSettings extends PreferenceFragment {
                         public void onSuccess(Boolean result) {
                             if (result) {
                                 mAudioDevice = value;
-                                preference.setSummary(mAudioDevice);
                                 mUIHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
+                                        preference.setSummary(mAudioDevice);
                                         Toast.makeText(getActivity(), R.string.audio_device_reboot_message, Toast.LENGTH_SHORT).show();
                                     }
                                 });
