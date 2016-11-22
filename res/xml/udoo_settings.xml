@@ -33,4 +33,8 @@
     <Preference
         android:key="@string/reboot_recovery"
         android:title="@string/reboot_recovery_title" />
+
+    <Preference
+        android:key="@string/expand_data_partition"
+        android:title="@string/expand_data_partition_title" />
 </PreferenceScreen>

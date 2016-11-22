@@ -18,6 +18,8 @@ import org.udoo.udoosettings.interfaces.OnResult;
 import org.udoo.udoosettings.task.UtilUdoo;
 import com.android.settings.R;
 import java.util.ArrayList;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created by harlem88 on 17/03/16.
@@ -53,6 +55,7 @@ public class UdooSettings extends PreferenceFragment {
 
         if (Build.MODEL.equals(A62)) {
 	    removePreference(getPreferenceManager().findPreference(ENABLE_EXTERNAL_OTG));
+	    removePreference(getPreferenceManager().findPreference("expand_data_partition"));
         }
 
         if (Build.MODEL.equals(UDOO_QUAD) || Build.MODEL.equals(A62)) {
@@ -186,11 +189,33 @@ public class UdooSettings extends PreferenceFragment {
                 preference.setSummary("-");
             }
         });
-        
+
         Preference button = (Preference)findPreference(getString(R.string.reboot_recovery));
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+                pm.reboot("recovery");
+                return true;
+            }
+        });
+
+        Preference dataPartition = (Preference)findPreference(getString(R.string.expand_data_partition));
+        dataPartition.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                try {
+                    Process p = Runtime.getRuntime().exec("sh");
+                    OutputStream os = p.getOutputStream();
+                    os.write("cp /system/expand-data.zip /cache/expand-data.zip\n".getBytes());
+                    os.write("mkdir -p /cache/recovery/\n".getBytes());
+                    os.write("echo 'boot-recovery' >/cache/recovery/command\n".getBytes());
+                    os.write("echo '--update_package=/cache/expand-data.zip' >> /cache/recovery/command\n".getBytes());
+                    os.flush();
+                } catch (IOException ex) {
+                    return false;
+                }
+
                 PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
                 pm.reboot("recovery");
                 return true;

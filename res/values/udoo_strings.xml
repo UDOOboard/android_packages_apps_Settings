@@ -29,4 +29,7 @@
     
     <string name="reboot_recovery">reboot_recovery</string>
     <string name="reboot_recovery_title">Reboot in TWRP Recovery</string>
+    
+    <string name="expand_data_partition">expand_data_partition</string>
+    <string name="expand_data_partition_title">Expand /data partition to fit the SD card</string>
 </resources>
