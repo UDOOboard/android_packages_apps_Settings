@@ -28,6 +28,7 @@ public class Settings extends SettingsActivity {
     /*
     * Settings subclasses for launching independently.
     */
+    public static class UDOOSettingsActivity extends SettingsActivity { /* empty */ }
     public static class BluetoothSettingsActivity extends SettingsActivity { /* empty */ }
     public static class WirelessSettingsActivity extends SettingsActivity { /* empty */ }
     public static class SimSettingsActivity extends SettingsActivity { /* empty */ }
@@ -160,4 +161,6 @@ public class Settings extends SettingsActivity {
     public static class DeviceSettings extends SettingsActivity { /* empty */ }
     public static class PersonalSettings extends SettingsActivity { /* empty */ }
     public static class SystemSettings extends SettingsActivity { /* empty */ }
+    public static class UDOOSettings extends SettingsActivity { /* empty */ }
+
 }

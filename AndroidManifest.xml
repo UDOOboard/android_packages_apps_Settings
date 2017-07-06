@@ -124,6 +124,14 @@
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
         </activity-alias>
 
+        <activity android:name=".Settings$UDOOSettings"
+                  android:label="@string/header_category_udoo">
+            <intent-filter android:priority="5">
+                <action android:name="com.android.settings.category.udoo" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".Settings$WirelessSettings"
             android:label="@string/header_category_wireless_networks">
             <intent-filter android:priority="4">
@@ -175,6 +183,43 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+
+        <!-- UDOO -->
+
+        <activity android:name="Settings$UDOOSettingsActivity"
+                  android:taskAffinity=""
+                  android:label="@string/udoo_settings_title"
+                  android:icon="@drawable/ic_udoo">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+            <intent-filter android:priority="1">
+                <action android:name="com.android.settings.action.SETTINGS" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.category"
+                       android:value="com.android.settings.category.udoo" />
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="org.udoo.udoosettings.UDOOSettings" />
+        </activity>
+
+        <!-- Keep compatibility with old shortcuts. -->
+        <activity-alias android:name="org.udoo.udoosettings.UDOOSettings"
+                        android:taskAffinity=""
+                        android:label="@string/udoo_settings"
+                        android:icon="@drawable/ic_settings_wireless"
+                        android:targetActivity="Settings$UDOOSettingsActivity"
+                        android:configChanges="orientation|keyboardHidden|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                       android:value="org.udoo.udoosettings.UDOOSettings" />
+        </activity-alias>
 
         <!-- Wireless Controls -->
 

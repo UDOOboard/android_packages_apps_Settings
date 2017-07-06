@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Settings main menu category heading. Udoo Settings. [CHAR LIMIT=40] -->
+    <string name="header_category_udoo">UDOO</string>
+    <string name="udoo_settings_title">Board Settings</string>
+    <string name="udoo_settings">UDOO Settings</string>
+
+    <string name="udoo_video_output_title">Video Output</string>
+    <string name="udoo_video_output_key">udoo_video_output_key</string>
+    <string name="udoo_video_output_mod_ok">Video output saved. Reboot to apply the new settings now?</string>
+    <string name="udoo_video_output_mod_ko">Failed to change video output!</string>
+    <string name="reboot_failed">Failed to reboot!</string>
+
+    <string name="udoo_governor_title">Governor</string>
+    <string name="udoo_governor_key">udoo_governor_key</string>
+    <string name="udoo_governor_mod_ok">Governor changed.</string>
+    <string name="udoo_governor_mod_ko">Failed to change governor!</string>
+
+    <string name="udoo_audio_device_title">Audio Device</string>
+    <string name="udoo_audio_device_key">udoo_audio_device_key</string>
+    <string name="udoo_audio_device_mod_ok">Audio device saved. Reboot to apply the new settings now?</string>
+    <string name="udoo_audio_device_mod_ko">Failed to change audio device!</string>
+
+    <string name="udoo_recovery_title">Reboot in TWRP Recovery</string>
+    <string name="udoo_reboot_recovery_key">udoo_reboot_recovery_key</string>
+    <string name="udoo_recovery_mod_ok">Reboot in TWRP Recovery now?</string>
+
+    <string name="udoo_expand_data_partition_title">Expand /data partition to fit the SD card</string>
+    <string name="udoo_expand_data_partition_key">udoo_expand_data_partition_key</string>
+    <string name="udoo_expand_data_partition_dialog">Expand /data partition</string>
+    <string name="udoo_expand_data_partition_mod_ok">Reboot to expand /data parttion now?</string>
+
+    <string name="udoo_enable_external_otg_title">Enable internal Arduino communication</string>
+    <string name="udoo_enable_external_otg_key">udoo_enable_external_otg_key</string>
+    <string name="udoo_enable_external_otg_summary">Warning: enabling internal Arduino communication will disconnect the external USB OTG port</string>
+</resources>
